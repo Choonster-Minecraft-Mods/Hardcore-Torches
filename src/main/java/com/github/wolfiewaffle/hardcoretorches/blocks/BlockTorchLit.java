@@ -107,7 +107,7 @@ public class BlockTorchLit extends BlockTorch implements ITileEntityProvider
     	
 		return true;
     }
-    
+
     @Override
     public void onBlockPlacedBy(World world, int i, int j, int k, EntityLivingBase player, ItemStack itemstack) {
     	TileEntityTorchLit te = getTileEntity(world, i, j, k);
@@ -117,6 +117,20 @@ public class BlockTorchLit extends BlockTorch implements ITileEntityProvider
 		// itemDamage + fuel = MAX_FUEL
     	te.setFuel(MAX_FUEL - itemMeta);
     }
+
+	@Override
+	public boolean removedByPlayer(World world, EntityPlayer player, int x, int y, int z, boolean willHarvest) {
+		if(willHarvest) {
+			return true;
+		}
+		return super.removedByPlayer(world, player, x, y, z, willHarvest);
+	}
+
+	@Override
+	public void harvestBlock(World world, EntityPlayer player, int x, int y, int z, int meta) {
+		super.harvestBlock(world, player, x, y, z, meta);
+		world.setBlockToAir(x, y, z);
+	}
     
     @Override
     public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune)
